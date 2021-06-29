@@ -18,7 +18,6 @@ MODIFICATIONS (Modification, Author, Date):
 #ifndef CBLOB_INSPECTA_INCLUDED
 #define CBLOB_INSPECTA_INCLUDED
 class CBlob;
-#include "opencv/cxcore.h"
 #include "opencv2/opencv.hpp"
 #include "BlobLibraryConfiguration.h"
 #include "BlobContour.h"
@@ -44,7 +43,7 @@ class CBlob
 	friend class myCompLabeler;
 public:
 	CBlob();
-	CBlob( t_labelType id, CvPoint startPoint, CvSize originalImageSize );
+	CBlob( t_labelType id, cv::Point startPoint, cv::Size originalImageSize );
 	~CBlob();
 
 	//! Copy constructor
@@ -131,7 +130,7 @@ public:
 	//!	intContours - determines wheter to draw the holes of the blob (true) or not (false)
 	//!	srcImage - image from where to copy the holes contents. If unassigned and intContours is true, the internal pixels will be set to black.
 	void FillBlob( IplImage *image, CvScalar color, int offsetX = 0, int offsetY = 0, bool intContours = false, const IplImage *srcImage = NULL );
-	void FillBlob( cv::Mat image, CvScalar color, int offsetX = 0, int offsetY = 0, bool intContours = false, const cv::Mat srcImage = cv::Mat() );
+	void FillBlob( cv::Mat image, cv::Scalar color, int offsetX = 0, int offsetY = 0, bool intContours = false, const cv::Mat srcImage = cv::Mat() );
 	
 	//! Joins a blob to current one
 	//! NOTE: All the data is copied, a new blob is created and joined to the caller one.
@@ -229,8 +228,8 @@ private:
 	CvBox2D m_ellipse;
 
 	//! Sizes from image where blob is extracted
-	CvSize m_originalImageSize;
-	public: CvSize OriginalImageSize() const { return m_originalImageSize; }
+	cv::Size m_originalImageSize;
+	public: cv::Size OriginalImageSize() const { return m_originalImageSize; }
 	public: void OriginalImageSize(int width, int height) { m_originalImageSize.width = width; m_originalImageSize.height = height; }
 
 

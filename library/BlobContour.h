@@ -3,10 +3,13 @@
 
 
 #include "list"
-#include "opencv/cv.h"
-#include "opencv/cxcore.h"
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
+#include "opencv2/core/types.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include <opencv2/imgproc/imgproc_c.h>
+
+
 #include <list>
 
 
@@ -35,7 +38,7 @@ public:
 	CBlobContour();
 	//Size is used to empirically reserve internal vectors for contour points.
 	//This can be a help for very small images, where the vector would be too large.
-	CBlobContour(CvPoint startPoint, const cv::Size &imageRes = cv::Size(-1,-1));
+	CBlobContour(cv::Point startPoint, const cv::Size &imageRes = cv::Size(-1,-1));
 	//! Copy constructor
 	CBlobContour(CBlobContour *source );
 	//CBlobContour(CBlobContour &source);
@@ -66,7 +69,7 @@ public:
 
 	void ShiftBlobContour(int x,int y);
 	
-	CvPoint GetStartPoint() const
+	cv::Point GetStartPoint() const
 	{
 		return m_startPoint;
 	}
@@ -89,7 +92,7 @@ protected:
 
 private:
 	//! Starting point of the contour
-	CvPoint m_startPoint;
+	cv::Point m_startPoint;
 	//! All points from the contour
 	t_contours m_contourPoints;
 
@@ -98,15 +101,15 @@ private:
 	//! Computed perimeter from contour
 	double m_perimeter;
 	//! Computed moments from contour
-	CvMoments m_moments;
+	cv::Moments m_moments;
    	static const t_PointList EMPTY_LIST;
 
 	//This value is actually used mainly in the detection part, for the labels.
 	CBlob* parent;
 };
 
-t_chainCode points2ChainCode(CvPoint p1, CvPoint p2);
-CvPoint chainCode2Point(CvPoint origin,t_chainCode code);
+t_chainCode points2ChainCode(cv::Point p1, cv::Point p2);
+cv::Point chainCode2Point(cv::Point origin,t_chainCode code);
 
 #endif	//!BLOBCONTOUR_H_INCLUDED
 

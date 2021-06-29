@@ -32,7 +32,7 @@ CBlob::CBlob()
 	isJoined=false;
 	startPassed=false;
 }
-CBlob::CBlob( t_labelType id, CvPoint startPoint, CvSize originalImageSize ):m_externalContour(startPoint,originalImageSize)
+CBlob::CBlob( t_labelType id, cv::Point startPoint, cv::Size originalImageSize ):m_externalContour(startPoint,originalImageSize)
 {
 	m_externalContour.parent=this;
 	m_id = id;
@@ -186,7 +186,7 @@ double CBlob::Area(AreaMode areaCompMode)
 		{
 			Rect bbox = GetBoundingBox();
 			Mat image = Mat::zeros(bbox.height,bbox.width,CV_8UC1);
-			FillBlob(image,Scalar(255),-bbox.x,-bbox.y,true);
+			FillBlob(image,cv::Scalar(255),-bbox.x,-bbox.y,true);
 			area = countNonZero(image);
 			break;
 		}
@@ -260,7 +260,7 @@ int	CBlob::Exterior(IplImage *mask, bool xBorder /* = true */, bool yBorder /* =
 }
 int	CBlob::Exterior(Mat mask, bool xBorder /* = true */, bool yBorder /* = true */)
 {
-	IplImage temp = (IplImage) mask;
+	IplImage temp = cvIplImage(mask);
 	return Exterior(&temp, xBorder, yBorder);	 
 }
 /**
@@ -414,7 +414,7 @@ double CBlob::ExternPerimeter( Mat maskImage, bool xBorder /* = true */, bool yB
 		return ExternPerimeter( NULL, xBorder /* = true */, yBorder /* = true */);
 	}
 	else{
-		IplImage temp = (IplImage) maskImage;
+		IplImage temp = cvIplImage( maskImage );
 		return ExternPerimeter( &temp, xBorder /* = true */, yBorder /* = true */);
 	}
 }
@@ -460,7 +460,7 @@ double CBlob::Mean( IplImage *image )
 	// Create a mask with same size as blob bounding box
 	IplImage *mask;
 	CvScalar mean, std;
-	CvPoint offset;
+	cv::Point offset;
 
 	GetBoundingBox();
 	
@@ -529,7 +529,7 @@ double CBlob::Mean( IplImage *image )
 }
 
 double CBlob::Mean(Mat image ){
-	IplImage temp = (IplImage) image;
+	IplImage temp = cvIplImage( image );
 	return Mean(&temp);
 }
 double CBlob::StdDev( IplImage *image )
@@ -540,13 +540,13 @@ double CBlob::StdDev( IplImage *image )
 	return m_stdDevGray;
 }
 double CBlob::StdDev(Mat image){
-	IplImage temp = (IplImage) image;
+	IplImage temp = cvIplImage( image );
 	return StdDev(&temp);
 }
 
 //void CBlob::MeanStdDev( Mat image, double *mean, double *stddev )
 //{
-//	IplImage temp = (IplImage) image;
+//	IplImage temp = cvIplImage( image );
 //	Mean(&temp);
 //	*mean = m_meanGray;
 //	*stddev = m_stdDevGray;
@@ -791,7 +791,7 @@ void CBlob::FillBlob( IplImage *image, CvScalar color, int offsetX , int offsetY
 	else
 		FillBlob(cvarrToMat(image),color,offsetX,offsetY,intContours,cvarrToMat(srcImage));
 }
-void CBlob::FillBlob( Mat image, CvScalar color, int offsetX, int offsetY, bool intContours, const Mat srcImage){
+void CBlob::FillBlob( Mat image, cv::Scalar color, int offsetX, int offsetY, bool intContours, const Mat srcImage){
 	CV_FUNCNAME("CBlob::FillBlob");
 	__CV_BEGIN__;
 	if(srcImage.data && intContours)

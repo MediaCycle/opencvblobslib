@@ -3,7 +3,7 @@
 #include <fstream>
 #include "blob.h"
 #include "BlobResult.h"
-#include "highgui.h" //include it to use GUI functions.
+#include <opencv2/highgui/highgui_c.h> //include it to use GUI functions.
 
 const int NUMCORES = 2;
 using namespace std;
@@ -75,7 +75,7 @@ int main(){
 		for(int j=0;j<iter;j++){
 			time=getTickCount();
 			CBlobResult res(temp_color_img,mt,NUMCORES);
-			//CBlobResult res(&(IplImage)temp_color_img,NULL,0,NUMCORES);
+			//CBlobResult res(&cvIplImage(temp_color_img),NULL,0,NUMCORES);
 			elapsed =  (getTickCount()-time)/getTickFrequency();
 			cout <<j<<"/"<<iter<<"\tTempo Multi Thread: " <<elapsed<<"\t Nblobs: "<<res.GetNumBlobs()<<"\tTime: "<<endl;
 			fileOutMT <<"\t" << elapsed;
@@ -106,7 +106,7 @@ void test()
 	CBlobResult blobs;
 	color_img.setTo(Vec3b(0,0,0));
 	time=getTickCount();
-	IplImage temp = (IplImage)binary_img;
+	IplImage temp = cvIplImage(binary_img);
 	blobs = CBlobResult(&temp,NULL,1);
 	cout <<"found: "<<blobs.GetNumBlobs()<<endl;
 	cout <<"Tempo ST: "<<(getTickCount() -time)/getTickFrequency()<<endl;
